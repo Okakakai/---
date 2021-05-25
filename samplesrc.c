@@ -18,11 +18,10 @@ int main(void) {
     if (regexec(&preg, str, 1, pm, 0) == 0) {
         printf("入力された電話番号は日本の携帯電話番号です.\n");
     } else {
-        printf("入力された電話番号は日本の携帯電話番号ではありません\n")
+        printf("入力された電話番号は日本の携帯電話番号ではありません\n");
     }
 
     regfree(&preg);
-    fclose(fp);
 
     return 0;
 }
