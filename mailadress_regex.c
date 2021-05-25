@@ -6,7 +6,7 @@ int main(int count, char **fname) {
     FILE *fp;
     char str[1024], result[14], buffer[512];
 
-    const char regex[] = "[\w_\-.]+@[\w_\-.]+\.[A-Za-z]+";
+    const char regex[] = "[\\w_\\-.]+@[\\w_\\-.]+\\.[A-Za-z]+";
     // \.  メタキャラクタなので\をつける　ｎと\nみたいな
     // \w アルファベット、_ ,数字
     // + 直前のやつが一回以上
@@ -17,9 +17,10 @@ int main(int count, char **fname) {
     int firstindex, lastindex;
 
     if (regcomp(&preg, regex, REG_EXTENDED | REG_NEWLINE) != 0) {
-        printf("regex is not avairable");
+        printf("regex is not avairable\n");
         return 1;
     }
+
     fp = fopen(fname[1], "r");
 
     if (fp == NULL) {
@@ -40,6 +41,7 @@ int main(int count, char **fname) {
             printf("...\n");
         }
     }
+
     printf("検索終了\n");
     regfree(&preg);
     fclose(fp);
