@@ -29,19 +29,24 @@ int main(int count, char **fname)
 
     while (fgets(str, 1024, fp) != NULL)
     {
-        if (regexec(&preg, str, 1, pm, 0) == 0)
+        int is_clean = 0;
+        while (!is_clean)
         {
-            firstindex = pm[0].rm_so;
-            lastindex = pm[0].rm_eo;
-            strncpy(result, str + firstindex, lastindex - firstindex);
-            strcpy(buffer, str);
-            strncpy(str, buffer + lastindex,
-                    (sizeof buffer / sizeof buffer[1]) - lastindex);
-            printf("検索がヒットしました\nメールアドレス : %s\n\n", result);
-        }
-        else
-        {
-            printf("...\n");
+            if (regexec(&preg, str, 1, pm, 0) == 0)
+            {
+                firstindex = pm[0].rm_so;
+                lastindex = pm[0].rm_eo;
+                strncpy(result, str + firstindex, lastindex - firstindex);
+                strcpy(buffer, str);
+                strncpy(str, buffer + lastindex,
+                        (sizeof buffer / sizeof buffer[1]) - lastindex);
+                printf("検索がヒットしました\n\n電話番号 : %s\n\n", result);
+            }
+            else
+            {
+                printf("...\n");
+                is_clean = 1;
+            }
         }
     }
     printf("検索終了\n");
