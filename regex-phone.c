@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(int count, char **fname) {
+int main(int count, char **fname)
+{
     FILE *fp;
     char str[1024], result[14], buffer[512];
 
@@ -12,28 +13,39 @@ int main(int count, char **fname) {
 
     int firstindex, lastindex;
 
-    if (regcomp(&preg, regex, REG_EXTENDED | REG_NEWLINE) != 0) {
+    if (regcomp(&preg, regex, REG_EXTENDED | REG_NEWLINE) != 0)
+    {
         printf("regex is not avairable");
         return 1;
     }
     fp = fopen(fname[1], "r");
 
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         printf("did not file open\n");
         return 1;
     }
 
-    while (fgets(str, 1024, fp) != NULL) {
-        if (regexec(&preg, str, 1, pm, 0) == 0) {
-            firstindex = pm[0].rm_so;
-            lastindex = pm[0].rm_eo;
-            strncpy(result, str + firstindex, lastindex - firstindex);
-            strcpy(buffer, str);
-            strncpy(str, buffer + lastindex,
-                    (sizeof buffer / sizeof buffer[1]) - lastindex);
-            printf("検索がヒットしました\n\n電話番号 : %s\n", result);
-        } else {
-            printf("...\n");
+    while (fgets(str, 1024, fp) != NULL)
+    {
+        int is_clean = 0;
+        while (!is_clean)
+        {
+            if (regexec(&preg, str, 1, pm, 0) == 0)
+            {
+                firstindex = pm[0].rm_so;
+                lastindex = pm[0].rm_eo;
+                strncpy(result, str + firstindex, lastindex - firstindex);
+                strcpy(buffer, str);
+                strncpy(str, buffer + lastindex,
+                        (sizeof buffer / sizeof buffer[1]) - lastindex);
+                printf("検索がヒットしました\n\n電話番号 : %s\n\n", result);
+            }
+            else
+            {
+                printf("...\n");
+                is_clean = 1;
+            }
         }
     }
     printf("検索終了\n");
